@@ -16,6 +16,8 @@ const generateColorPalette = () => {
 
 
 
+
+
 const StockMarketPattern = React.memo(() => (
   <>
     <style>
@@ -78,7 +80,7 @@ const StockMarketPattern = React.memo(() => (
 
 const Psinfo = ({ mail }) => {
 
-   const updateCount = async () => {
+  const updateCount = async () => {
     const email = mail; 
     try {
       const getCookie = Cookies.get('sessionToken');
@@ -94,10 +96,11 @@ const Psinfo = ({ mail }) => {
       console.error(error.response.data); 
     }
   } 
+
   const [colors, setColors] = useState(generateColorPalette());
   const [timer, setTimer] = useState(3);
   const [formData, setFormData] = useState({
-    email : mail,
+    email:mail,
     income: '',
     age: '',
     city: '',
@@ -159,32 +162,29 @@ const Psinfo = ({ mail }) => {
     setFormStep(prev => Math.max(prev - 1, 0));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const submitForm = async () => {
-      try {
-        const getCookie = Cookies.get('sessionToken');
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}submitform`, 
-          { formData },
-          {
-            headers: {
-              Authorization: `Bearer ${getCookie}`,
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          }
-        );
-        console.log(response.data);
-        updateCount();
-      } catch (error) {
-        console.error(error.response ? error.response.data : error);
-      }
-    };
-    submitForm();    
-    console.log('Form submitted:', formData);
+    
+    try {
+      console.log("formData => ",formData)
+      const getCookie = Cookies.get('sessionToken');
+      const response = await axios.post( process.env.REACT_APP_BACKEND_URL +"submitdata", { formData },{
+        headers: {
+          Authorization: `Bearer ${getCookie}`,
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+      console.log(response.data);
+      updateCount(); 
+    } catch (error) {
+      console.error(error.response.data); 
+    }
+
     setFormSubmitted(true);
-    setFormData({income: '',
+    setFormData({
+      email:mail,
+      income: '',
       age: '',
       city: '',
       foodAtHome: '',
@@ -228,7 +228,6 @@ const Psinfo = ({ mail }) => {
   };
 
   if (formSubmitted) {
-    
     return (
       <>
       <div className="relative flex justify-center items-center min-h-screen overflow-hidden">
