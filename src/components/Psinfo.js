@@ -74,6 +74,23 @@ const StockMarketPattern = React.memo(() => (
 ));
 
 const Psinfo = ({ mail }) => {
+
+   const updateCount = async () => {
+    const email = mail; 
+    try {
+      const getCookie = Cookies.get('sessionToken');
+      const response = await axios.post( process.env.REACT_APP_BACKEND_URL +"updatecount", { email },{
+        headers: {
+          Authorization: `Bearer ${getCookie}`,
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+      console.log(response.data); 
+    } catch (error) {
+      console.error(error.response.data); 
+    }
+  } 
   const [colors, setColors] = useState(generateColorPalette());
   const [timer, setTimer] = useState(3);
   const [formData, setFormData] = useState({
