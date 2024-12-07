@@ -395,6 +395,8 @@ const Login = (log) => {
               withCredentials: true,
             }
           );
+
+          console.log(findemail);
           findemail.user.count===0? navigate('/foam', { replace: true }) : navigate('/home', { replace: true })
     
         
