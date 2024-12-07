@@ -161,6 +161,27 @@ const Psinfo = ({ mail }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const submitForm = async () => {
+      try {
+        const getCookie = Cookies.get('sessionToken');
+        const response = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}submitform`, 
+          { formData },
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie}`,
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        console.log(response.data);
+        updateCount();
+      } catch (error) {
+        console.error(error.response ? error.response.data : error);
+      }
+    };
+    submitForm();    
     console.log('Form submitted:', formData);
     setFormSubmitted(true);
     setFormData({income: '',
@@ -207,27 +228,7 @@ const Psinfo = ({ mail }) => {
   };
 
   if (formSubmitted) {
-    const submitForm = async () => {
-      try {
-        const getCookie = Cookies.get('sessionToken');
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}submitform`, 
-          { formData },
-          {
-            headers: {
-              Authorization: `Bearer ${getCookie}`,
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          }
-        );
-        console.log(response.data);
-        updateCount();
-      } catch (error) {
-        console.error(error.response ? error.response.data : error);
-      }
-    };
-    submitForm();    
+    
     return (
       <>
       <div className="relative flex justify-center items-center min-h-screen overflow-hidden">
