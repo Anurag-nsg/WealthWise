@@ -203,6 +203,7 @@ const Psinfo = ({ mail }) => {
   };
 
   if (formSubmitted) {
+    updateCount();
     return (
       <>
       <div className="relative flex justify-center items-center min-h-screen overflow-hidden">
