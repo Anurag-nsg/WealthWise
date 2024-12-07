@@ -207,28 +207,27 @@ const Psinfo = ({ mail }) => {
   };
 
   if (formSubmitted) {
-
-    const submitfoam = async () => {
+    const submitForm = async () => {
       try {
         const getCookie = Cookies.get('sessionToken');
-        const response = await axios.post( process.env.REACT_APP_BACKEND_URL +"submitform", { formData },{
-          headers: {
-            Authorization: `Bearer ${getCookie}`,
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        });
-        console.log(response.data); 
+        const response = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}submitform`, 
+          { formData },
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie}`,
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        console.log(response.data);
+        updateCount();
       } catch (error) {
-        console.error(error.response.data); 
+        console.error(error.response ? error.response.data : error);
       }
-    } 
-
-    if(submitfoam){
-      updateCount();
-    }
-
-    
+    };
+    submitForm();    
     return (
       <>
       <div className="relative flex justify-center items-center min-h-screen overflow-hidden">
