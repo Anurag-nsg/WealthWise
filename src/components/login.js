@@ -397,7 +397,7 @@ const Login = (log) => {
           );
 
           console.log(findemail);
-          findemail.user.count===0? navigate('/foam', { replace: true }) : navigate('/home', { replace: true })
+          findemail.data.user.count===0? navigate('/foam', { replace: true }) : navigate('/home', { replace: true })
     
         
             
@@ -562,7 +562,7 @@ const Login = (log) => {
         withCredentials: true,
       }
     );
-    findemail.count===0? navigate('/foam', { replace: true }) : navigate('/home', { replace: true })
+    findemail.data.user.count ===0? navigate('/foam', { replace: true }) : navigate('/home', { replace: true })
 
 
     } catch (error) {
