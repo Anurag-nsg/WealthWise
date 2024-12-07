@@ -94,6 +94,7 @@ const Psinfo = ({ mail }) => {
   const [colors, setColors] = useState(generateColorPalette());
   const [timer, setTimer] = useState(3);
   const [formData, setFormData] = useState({
+    email : mail,
     income: '',
     age: '',
     city: '',
@@ -203,7 +204,28 @@ const Psinfo = ({ mail }) => {
   };
 
   if (formSubmitted) {
-    updateCount();
+
+    const submitfoam = async () => {
+      try {
+        const getCookie = Cookies.get('sessionToken');
+        const response = await axios.post( process.env.REACT_APP_BACKEND_URL +"submitform", { formData },{
+          headers: {
+            Authorization: `Bearer ${getCookie}`,
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+        console.log(response.data); 
+      } catch (error) {
+        console.error(error.response.data); 
+      }
+    } 
+
+    if(submitfoam){
+      updateCount();
+    }
+
+    
     return (
       <>
       <div className="relative flex justify-center items-center min-h-screen overflow-hidden">
