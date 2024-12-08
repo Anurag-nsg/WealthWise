@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const generateColorPalette = () => {
   const hue = Math.floor(Math.random() * 360);
@@ -144,6 +146,36 @@ const Psinfo = ({ mail }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+     toast.dismiss();
+
+    toast(
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          style={{
+            width: '20px',
+            height: '20px',
+            border: '3px solid #ddd',
+            borderTop: '3px solid #4caf50',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            marginRight: '10px',
+            alignContent:'center',
+            justifyContent:'center',
+            textAlign:'center'
+          }}
+        ></div>
+       Submitting form....
+      </div>,
+      {
+        position: 'top-center',
+        autoClose: false,
+        closeOnClick: false,
+        hideProgressBar: true,
+        draggable: false,
+        className: 'custom-toast',
+      }
+    );
     
     try {
       const getCookie = Cookies.get('sessionToken');
@@ -157,6 +189,8 @@ const Psinfo = ({ mail }) => {
       console.log(response.data);
       updateCount(); 
     } catch (error) {
+      toast.dismiss();
+      toast.error('Error While Submitting form', { position: 'top-center' });
       console.error(error.response.data); 
     }
 
@@ -267,6 +301,17 @@ const Psinfo = ({ mail }) => {
   }
 
   return (
+
+    <><ToastContainer
+    position="top-center"
+    autoClose={2500}
+    hideProgressBar={false}
+    newestOnTop={false}
+    rtl={false}
+    pauseOnFocusLoss
+    pauseOnHover
+  />    
+      
     <div className="relative flex justify-center items-center min-h-screen overflow-hidden">
 
     <StockMarketPattern />
@@ -818,6 +863,7 @@ const Psinfo = ({ mail }) => {
         </div>
       </motion.div>
     </div>
+ </>
   );
 };
 
