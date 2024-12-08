@@ -96,7 +96,6 @@ const ChatBot = ({ mail }) => {
       e.preventDefault();
       setnivloading(true);
       handleSendMessage();
-      setnivloading(false);
     }
   };
 
