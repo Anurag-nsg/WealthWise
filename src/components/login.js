@@ -555,18 +555,21 @@ const Login = (log) => {
       toast.success('Login successful!');
       log.user1(true);
       clear();
-      const findemail = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}findemail?email=${encodeURIComponent(email)}`,
-      {
-        headers: {
-          Authorization: `Bearer ${getCookie}`,
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
+      try{
+        const findemail = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}findemail?email=${encodeURIComponent(email)}`,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie}`,
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        findemail.data.user.count ===0? navigate('/foam', { replace: true }) : navigate('/home', { replace: true })
+      }catch(e){
+        navigate('/foam', { replace: true })
       }
-    );
-    findemail.data.user.count ===0? navigate('/foam', { replace: true }) : navigate('/home', { replace: true })
-
 
     } catch (error) {
       console.error("Error during Google Sign-In:", error);
