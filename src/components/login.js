@@ -499,7 +499,8 @@ const Login = (log) => {
     let encrypted="";
     const Rtoken = await recaptchaRef.current.execute();
     setRecaptchaToken(Rtoken);
-    
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
       setEmail(user.email)
       log.email(user.email);
       setIsLoggedIn(true);
@@ -530,33 +531,30 @@ const Login = (log) => {
       const dat=response.data;
       Cookies.set('sessionToken', dat.token , { expires, secure: true, sameSite: 'Strict' });
       try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const user1 = { email: user.email, password : null, phone : user.phoneNumber, name : user.displayName,profile : user.photoURL};
-      const getCookie = Cookies.get('sessionToken');
-      try{
-        const response1 = await axios.post(
-          process.env.REACT_APP_BACKEND_URL + "signup",
-          user1,
-          {
-            headers: {
-              Authorization: `Bearer ${getCookie}`,
-              'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-          }
-        );
-      }catch(e){
-        console.log(e);
-      }
+        const user1 = { email: user.email, password : null, phone : user.phoneNumber, name : user.displayName,profile : user.photoURL};
+        const getCookie = Cookies.get('sessionToken');
+        try{
+          const response1 = await axios.post(
+            process.env.REACT_APP_BACKEND_URL + "signup",
+            user1,
+            {
+              headers: {
+                Authorization: `Bearer ${getCookie}`,
+                'Content-Type': 'application/json',
+              },
+              withCredentials: true,
+            }
+          );
+        }catch(e){
+          console.log(e);
+        }
         
-      setLoading(false);  
-      setIsLoggedIn(true);
-      toast.dismiss();
-      toast.success('Login successful!');
-      log.user1(true);
-      clear();
+        setLoading(false);  
+        setIsLoggedIn(true);
+        toast.dismiss();
+        toast.success('Login successful!');
+        log.user1(true);
+        clear();
       
       try{
         const findemail = await axios.get(
@@ -572,7 +570,7 @@ const Login = (log) => {
         findemail.data.user.count ===0? navigate('/foam', { replace: true }) : navigate('/home', { replace: true })
       }catch(e){
         navigate('/foam', { replace: true })
-      }
+      }  
 
     } catch (error) {
       console.error("Error during Google Sign-In:", error);
