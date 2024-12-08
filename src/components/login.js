@@ -505,18 +505,21 @@ const Login = (log) => {
 
       const user1 = { email: user.email, password : null, phone : user.phoneNumber, name : user.displayName,profile : user.photoURL};
       const getCookie = Cookies.get('sessionToken');
-      const response1 = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "signup",
-        user1,
-        {
-          headers: {
-            Authorization: `Bearer ${getCookie}`,
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        }
-      );
-      
+      try{
+        const response1 = await axios.post(
+          process.env.REACT_APP_BACKEND_URL + "signup",
+          user1,
+          {
+            headers: {
+              Authorization: `Bearer ${getCookie}`,
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+      }catch(e){
+        console.log(e);
+      }
       setEmail(user.email)
       log.email(user.email);
       setIsLoggedIn(true);
