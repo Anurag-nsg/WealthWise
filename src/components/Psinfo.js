@@ -130,7 +130,8 @@ const Psinfo = ({ mail }) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
-      [name]: value
+      [name]: value,
+       email:mail
     }));
   };
 
@@ -166,7 +167,6 @@ const Psinfo = ({ mail }) => {
     e.preventDefault();
     
     try {
-      console.log("formData => ",formData)
       const getCookie = Cookies.get('sessionToken');
       const response = await axios.post( process.env.REACT_APP_BACKEND_URL +"submitdata", { formData },{
         headers: {
