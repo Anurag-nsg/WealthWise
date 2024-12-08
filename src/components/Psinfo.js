@@ -14,10 +14,6 @@ const generateColorPalette = () => {
   };
 };
 
-
-
-
-
 const StockMarketPattern = React.memo(() => (
   <>
     <style>
